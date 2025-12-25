@@ -10,7 +10,7 @@ from operator import itemgetter
 
 LLM_MODEL="gemma3:1b"
 BASE_DIR=os.path.dirname(os.path.abspath(__file__))
-DB_FILE=os.path.join(BASE_DIR, "Chinook.db")
+DB_FILE=os.path.join(BASE_DIR, "company.db")
 
 if not os.path.exists(DB_FILE):
     url="https://github.com/lerocha/chinook-database/raw/master/ChinookDatabase/DataSources/Chinook_Sqlite.sqlite"
