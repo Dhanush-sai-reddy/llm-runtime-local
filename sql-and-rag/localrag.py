@@ -8,8 +8,7 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 
 LLM_MODEL="gemma3:1b"
 EMBED_MODEL="mxbai-embed-large"
-PDF_PATH=r"C:\Users\dhanu\Downloads\FLAP-SAM.pdf" 
-
+PDF_PATH="employee_handbook.pdf"
 if not os.path.exists(PDF_PATH):
     print(f"ERROR: File not found: {PDF_PATH}")
     exit()
@@ -23,8 +22,8 @@ raw_docs=loader.load()
 
 text_splitter=RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200, add_start_index=True)
 chunks=text_splitter.split_documents(raw_docs)
-
-vector_store=Chroma.from_documents(documents=chunks, embedding=embed_model, collection_name="pdf-rag-storage")
+collection_name="hr_policy_new_v1"
+vector_store=Chroma.from_documents(documents=chunks, embedding=embed_model, collection_name=collection_name)
 retriever=vector_store.as_retriever(search_kwargs={"k": 3})
 
 template="""Answer based ONLY on the context below.
@@ -51,4 +50,4 @@ def ask_rag(query):
     return str(response)
 
 if __name__ == "__main__":
-    print(ask_rag("What is FLAP-SAM?"))
+    print(ask_rag("What is cost reduction achieved?"))

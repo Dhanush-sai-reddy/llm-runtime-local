@@ -9,7 +9,10 @@ except ImportError as e:
     print(f"Error: {e}")
     sys.exit()
 
-llm=ChatOllama(model="gemma3:1b", format="json")
+try:
+    llm=ChatOllama(model="gemma3:1b", format="json")
+except TypeError:
+    llm=ChatOllama(model="gemma3:1b")
 
 ROUTER_PROMPT="""
 You are a router. Return JSON only.
