@@ -3,8 +3,12 @@ import os
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
 
+BASE_DIR=os.path.dirname(os.path.abspath(__file__))
+DB_FILE=os.path.join(BASE_DIR, "company.db")
+PDF_FILE=os.path.join(BASE_DIR, "employee_handbook.pdf")
+
 def create_db():
-    connection=sqlite3.connect("company.db")
+    connection=sqlite3.connect(DB_FILE)
     cursor=connection.cursor()
     
     cursor.execute("""
@@ -53,7 +57,30 @@ def create_db():
     print("✅ Database created.")
 
 def create_pdf():
-    c=canvas.Canvas("employee_handbook.pdf", pagesize=letter)
+    connection=sqlite3.connect(DB_FILE)
+    cursor=connection.cursor()
+
+    cursor.execute(
+        """
+        SELECT e.id,
+               e.name,
+               e.role,
+               e.department,
+               e.join_date,
+               p.rating,
+               p.last_review_date,
+               l.sick_leave_days,
+               l.vacation_days
+        FROM employees e
+        LEFT JOIN performance p ON e.id = p.emp_id
+        LEFT JOIN leave_balances l ON e.id = l.emp_id
+        ORDER BY e.id
+        """
+    )
+    employee_rows=cursor.fetchall()
+    connection.close()
+
+    c=canvas.Canvas(PDF_FILE, pagesize=letter)
     width,height=letter
     y=height-50
 
@@ -117,8 +144,21 @@ def create_pdf():
     write("- Dress Code: Casual for Engineering; Business Casual for Client-Facing roles.")
     write("- Anti-Harassment: Zero tolerance policy. Report incidents to HR immediately.")
 
+    y-=20
+    write("7. Employee Snapshot (from HR database)", bold=True)
+
+    for row in employee_rows:
+        emp_id,name,role,department,join_date,rating,last_review,sick_leave_days,vacation_days=row
+        write(f"ID {emp_id} - {name} ({role}, {department})")
+        write(f"  Joined: {join_date}")
+        if rating is not None:
+            write(f"  Last Rating: {rating} (reviewed on {last_review})")
+        if sick_leave_days is not None and vacation_days is not None:
+            write(f"  Leave Balance - Sick: {sick_leave_days} days, Vacation: {vacation_days} days")
+        y-=5
+
     c.save()
-    print("✅ Expanded PDF 'employee_handbook.pdf' created.")
+    print("✅ PDF 'employee_handbook.pdf' generated from database data.")
 
 if __name__=="__main__":
     create_db()

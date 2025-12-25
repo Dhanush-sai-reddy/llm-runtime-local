@@ -51,4 +51,4 @@ def ask_rag(query):
     return str(response)
 
 if __name__ == "__main__":
-    print(ask_rag("What is FLAP-SAM?"))
+    print(ask_rag("What is cost reduction achieved?"))

@@ -5,12 +5,19 @@ from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.runnables import RunnablePassthrough
 from langchain_community.document_loaders import PyPDFLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
+from setup import create_db, create_pdf, PDF_FILE, DB_FILE
 
 LLM_MODEL="gemma3:1b"
 EMBED_MODEL="mxbai-embed-large"
-PDF_PATH="employee_handbook.pdf"
+PDF_PATH=PDF_FILE
 if not os.path.exists(PDF_PATH):
-    print(f"ERROR: File not found: {PDF_PATH}")
+    print("PDF not found. Creating database and PDF via setup.py...")
+    if not os.path.exists(DB_FILE):
+        create_db()
+    create_pdf()
+
+if not os.path.exists(PDF_PATH):
+    print(f"ERROR: File not found after setup: {PDF_PATH}")
     exit()
 
 print("Initializing RAG...")
