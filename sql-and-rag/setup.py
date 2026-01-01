@@ -54,7 +54,6 @@ def create_db():
 
     connection.commit()
     connection.close()
-    print("✅ Database created.")
 
 def create_pdf():
     connection=sqlite3.connect(DB_FILE)

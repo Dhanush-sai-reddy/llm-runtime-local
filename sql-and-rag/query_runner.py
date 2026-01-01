@@ -2,12 +2,8 @@ import json
 import sys
 from langchain_ollama import ChatOllama
 
-try:
-    from localrag import ask_rag
-    from llmforsql import ask_sql
-except ImportError as e:
-    print(f"Error: {e}")
-    sys.exit()
+from localrag import ask_rag
+from llmforsql import ask_sql
 
 try:
     llm=ChatOllama(model="gemma3:1b", format="json")
@@ -18,7 +14,7 @@ ROUTER_PROMPT="""
 You are a router. Return JSON only.
 Tools:
 1. "SQL": For database (Music, Sales, Customers).
-2. "RAG": For documents (PDF, FLAP-SAM).
+2. "RAG": For documents (PDF, EMPLOYEE-HANDBOOK).
 
 Question: {question}
 JSON: {{ "tool": "SQL" }} or {{ "tool": "RAG" }}
