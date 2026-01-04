@@ -12,18 +12,25 @@ from langchain_community.vectorstores import Chroma
 from langchain_core.documents import Document
 from sentence_transformers import CrossEncoder
 from soprano import SopranoTTS
+from transformers import pipeline
 
 IMG_PATH="image2.png"
 
 # Models
-vision_llm=ChatOllama(model="qwen3-vl:2b", temperature=0)
-text_llm=ChatOllama(model="gemma3:1b", temperature=0)
-embeddings=OllamaEmbeddings(model="nomic-embed-text")
-reranker=CrossEncoder('cross-encoder/ms-marco-TinyBERT-L-2-v2')
+vision_llm = ChatOllama(model="qwen3-vl:2b", temperature=0)
+text_llm = ChatOllama(model="gemma3:1b", temperature=0)
+embeddings = OllamaEmbeddings(model="nomic-embed-text")
+reranker = CrossEncoder('cross-encoder/ms-marco-TinyBERT-L-2-v2')
 tts_model = SopranoTTS(model_name_or_path="ekwek/Soprano-80M", device=device)
 SAMPLE_RATE = 32000
+router_model = pipeline(
+    "zero-shot-classification", 
+    model="Raffix/routing_module_action_question_conversation_move_hack_debertav3_nli",
+    device=0 if device == "cuda" else -1
+)
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
+
 
 # Data
 docs=[
@@ -48,18 +55,18 @@ def encode_image(path):
         return base64.b64encode(f.read()).decode('utf-8')
 
 def router_node(state: State):
-    # Replaced keywords with a semantic classifier using the text LLM
     question = state["messages"][-1].content
-    prompt = (
-        f"You are a routing agent. Decide if the user's query requires analyzing an image/chart "
-        f"or searching text documents.\n"
-        f"Query: {question}\n"
-        f"Respond with exactly one word: 'vision' or 'search'."
-    )
-    response = text_llm.invoke(prompt).content.strip().lower()
     
-    # Cleaning the response just in case the LLM is chatty
-    if "vision" in response:
+    #We use descriptive labels so the NLI model understands the context
+    labels = ["look at image or chart", "search text documents"]
+    
+    # Run zero-shot classification
+    results = router_model(question, candidate_labels=labels)
+    
+    # Get the top label
+    top_label = results['labels'][0]
+    
+    if top_label == "look at image or chart":
         return {"router_decision": "vision"}
     return {"router_decision": "search"}
 
@@ -78,14 +85,10 @@ def vision_node(state: State):
 def search_node(state: State):
     query=state["messages"][-1].content
     
-    # 1. Retrieve
     initial_docs=retriever.invoke(query)
-    
-    # 2. Rerank
     pairs=[[query, doc.page_content] for doc in initial_docs]
     scores=reranker.predict(pairs)
     
-    # Sort
     ranked_docs=sorted(zip(scores, initial_docs), key=lambda x: x[0], reverse=True)
     top_doc=ranked_docs[0][1]
     
