@@ -1,6 +1,8 @@
 import base64
-import pyttsx3
 import os
+import torch
+import numpy as np
+import sounddevice as sd
 from typing import Annotated, TypedDict, Literal
 from langgraph.graph import StateGraph, START, END
 from langgraph.graph.message import add_messages
@@ -9,15 +11,19 @@ from langchain_core.messages import HumanMessage
 from langchain_community.vectorstores import Chroma
 from langchain_core.documents import Document
 from sentence_transformers import CrossEncoder
+from soprano import SopranoTTS
 
 IMG_PATH="image2.png"
-engine=pyttsx3.init()
 
 # Models
 vision_llm=ChatOllama(model="qwen3-vl:2b", temperature=0)
 text_llm=ChatOllama(model="gemma3:1b", temperature=0)
 embeddings=OllamaEmbeddings(model="nomic-embed-text")
 reranker=CrossEncoder('cross-encoder/ms-marco-TinyBERT-L-2-v2')
+tts_model = SopranoTTS(model_name_or_path="ekwek/Soprano-80M", device=device)
+SAMPLE_RATE = 32000
+
+device = "cuda" if torch.cuda.is_available() else "cpu"
 
 # Data
 docs=[
@@ -28,7 +34,7 @@ docs=[
     Document(page_content="Total cities in study: 91. Total improved: 64.")
 ]
 vector_store=Chroma.from_documents(documents=docs, embedding=embeddings)
-retriever=vector_store.as_retriever(search_kwargs={"k": 5}) # Get more initially to rerank
+retriever=vector_store.as_retriever(search_kwargs={"k": 5})
 
 class State(TypedDict):
     messages: Annotated[list, add_messages]
@@ -42,8 +48,18 @@ def encode_image(path):
         return base64.b64encode(f.read()).decode('utf-8')
 
 def router_node(state: State):
-    msg=state["messages"][-1].content.lower()
-    if any(x in msg for x in ["image", "picture", "table", "chart"]):
+    # Replaced keywords with a semantic classifier using the text LLM
+    question = state["messages"][-1].content
+    prompt = (
+        f"You are a routing agent. Decide if the user's query requires analyzing an image/chart "
+        f"or searching text documents.\n"
+        f"Query: {question}\n"
+        f"Respond with exactly one word: 'vision' or 'search'."
+    )
+    response = text_llm.invoke(prompt).content.strip().lower()
+    
+    # Cleaning the response just in case the LLM is chatty
+    if "vision" in response:
         return {"router_decision": "vision"}
     return {"router_decision": "search"}
 
@@ -62,14 +78,14 @@ def vision_node(state: State):
 def search_node(state: State):
     query=state["messages"][-1].content
     
-    # 1. Retrieve (High Recall)
+    # 1. Retrieve
     initial_docs=retriever.invoke(query)
     
-    # 2. Rerank (High Precision)
+    # 2. Rerank
     pairs=[[query, doc.page_content] for doc in initial_docs]
     scores=reranker.predict(pairs)
     
-    # Sort by score and take top 1
+    # Sort
     ranked_docs=sorted(zip(scores, initial_docs), key=lambda x: x[0], reverse=True)
     top_doc=ranked_docs[0][1]
     
@@ -90,9 +106,22 @@ def update_draft(state: State):
     return {"draft_response": state["messages"][-1].content.strip()}
 
 def tts_node(state: State):
-    text=state["messages"][-1].content
-    engine.say(text)
-    engine.runAndWait()
+    text = state["messages"][-1].content
+    print(f"Speaking: {text}")
+    
+    stream = tts_model.infer_stream(text)
+    audio_chunks = []
+    for chunk in stream:
+        audio_chunks.append(chunk)
+    
+    if audio_chunks:
+        full_audio = np.concatenate(audio_chunks)
+        if full_audio.dtype != np.float32:
+            full_audio = full_audio.astype(np.float32)
+        
+        sd.play(full_audio, SAMPLE_RATE)
+        sd.wait()
+        
     return state
 
 workflow=StateGraph(State)
