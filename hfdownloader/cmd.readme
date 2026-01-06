@@ -1,0 +1,3 @@
+docker compose run downloader "org/checkpoint"----this command to download hf models
+eg: docker compose run downloader ekwek/Soprano-80M
+..then check models folder and specify model path/s in code

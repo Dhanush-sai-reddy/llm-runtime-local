@@ -16,6 +16,8 @@ from transformers import pipeline
 
 IMG_PATH="image2.png"
 
+device = "cuda" if torch.cuda.is_available() else "cpu"
+
 # Models
 vision_llm = ChatOllama(model="qwen3-vl:2b", temperature=0)
 text_llm = ChatOllama(model="gemma3:1b", temperature=0)
@@ -28,9 +30,6 @@ router_model = pipeline(
     model="Raffix/routing_module_action_question_conversation_move_hack_debertav3_nli",
     device=0 if device == "cuda" else -1
 )
-
-device = "cuda" if torch.cuda.is_available() else "cpu"
-
 
 # Data
 docs=[

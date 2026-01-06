@@ -1,0 +1,9 @@
+version: '3.8'
+
+services:
+  downloader:
+    build: .
+    volumes:
+      - ./models:/data
+    environment:
+    user: "${UID}:${GID}"
