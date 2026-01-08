@@ -5,5 +5,4 @@ services:
     build: .
     volumes:
       - ./models:/data
-    environment:
     user: "${UID}:${GID}"
