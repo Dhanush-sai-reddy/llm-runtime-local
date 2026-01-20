@@ -16,9 +16,11 @@ TL;DR
 - [milvusdb/](https://github.com/Dhanush-sai-reddy/llm-runtime-local/tree/main/milvusdb) — Example / helpers for Milvus vector DB integration.
 - [sql-and-rag/](https://github.com/Dhanush-sai-reddy/llm-runtime-local/tree/main/sql-and-rag) — SQL + RAG examples and helpers.
 - [vision rag/](https://github.com/Dhanush-sai-reddy/llm-runtime-local/tree/main/vision%20rag) — Image/vision RAG examples.
-- `docs&imagestovoiceast.py` and `image2.png` — extra utilities and assets.
+- [docs&imagestovoiceast.py](https://github.com/Dhanush-sai-reddy/llm-runtime-local/blob/main/docs%26imagestovoiceast.py) -Image and document rag with voice output
 
-> Note: The repository currently contains multiple example scripts. Read the top of each script to learn required dependencies and configurable options.
+
+> Note: The repository currently contains multiple example scripts. Read the top of each script to learn required dependencies and configurable options
+>     its advisable for running scripts in colab 
 
 ## Goals
 - Provide straightforward, local-first experiments combining open weights with RAG-style retrieval.
@@ -33,10 +35,10 @@ TL;DR
   - sentence-transformers or other embedding libs
   - faiss-cpu or a vector DB client (Milvus client if using Milvus)
   - numpy, pandas, torchvision (for vision examples)
-  - langchain (optional, if used)
+  - langchain
+  - langraph
 - GPU recommended for larger models.
 
-(There is no central requirements.txt in the repository; add one if you want reproducible installs.)
 
 ## Quickstart (example workflow)
 1. Clone the repo
@@ -53,6 +55,7 @@ TL;DR
    ```
 3. Download a model or weights
    - Use the scripts under `hfdownloader/` or your preferred method to fetch model weights.
+   - and specify model paths locally/in colab
 4. Prepare data & embeddings
    - Run a script or notebook (e.g., `qwen3multimediaembeddings.ipynb`) to generate embeddings and store them in a vector index (FAISS, Milvus, etc).
 5. Run a local RAG demo
@@ -66,21 +69,15 @@ Notes:
 - For Milvus usage, see the `milvusdb/` helper files and ensure the Milvus server is running before connecting.
 
 ## Examples of how scripts fit together
-- hfdownloader/ → download model weights
+- hfdownloader/ → download model weights (uses docker)
 - Embedding scripts / notebooks → create dense vectors for documents or multimedia
 - Vector DB (FAISS / Milvus) → store and index embeddings
 - localrag.py / videorag.py → query embeddings, fetch context, and run the local LLM to synthesize answers
 
-## Recommendations & Next steps
-- Add a `requirements.txt` with exact packages used in your main scripts for reproducibility.
-- Add usage examples (CLI flags) to each script or implement a single orchestrator CLI.
-- Add tests demonstrating a minimal end-to-end run (small sample docs + small embedding model).
-- Consider a LICENSE file to clarify reuse terms.
-
 ## Contributing
 Contributions welcome. Suggested workflow:
 1. Fork the repo
-2. Create a branch: `feat/readme-improvements`
+2. Create a branch: `feat/readme-improvements` 
 3. Make changes and submit a PR with a clear description and examples
 
 ## Troubleshooting
@@ -91,9 +88,3 @@ Contributions welcome. Suggested workflow:
 ## Contact
 - Repo owner: Dhanush-sai-reddy — open an issue for questions or feature requests.
 
----
-
-If you'd like, I can:
-- Commit this README.md to a new branch and open a PR, or
-- Push it directly to main (if you prefer).
-Tell me which you'd like and I will proceed.
