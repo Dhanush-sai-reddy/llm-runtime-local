@@ -9,26 +9,21 @@ TL;DR
 ## Contents / Key files
 - [localrag.py](https://github.com/Dhanush-sai-reddy/llm-runtime-local/blob/main/localrag.py) — Minimal local RAG demo / coordinator script.
 - [llmforsql.py](https://github.com/Dhanush-sai-reddy/llm-runtime-local/blob/main/llmforsql.py) — Example integration for LLMs and SQL.
+- [sql-and-rag/](https://github.com/Dhanush-sai-reddy/llm-runtime-local/tree/main/sql-and-rag) — SQL + RAG examples and helpers.
 - [videorag.py](https://github.com/Dhanush-sai-reddy/llm-runtime-local/blob/main/videorag.py) — Example pipeline for video → embeddings → RAG.
 - [qwenvisionlanguagemodel.py](https://github.com/Dhanush-sai-reddy/llm-runtime-local/blob/main/qwenvisionlanguagemodel.py) — Vision + language example for Qwen-like models.
-- [qwen3multimediaembeddings.ipynb](https://github.com/Dhanush-sai-reddy/llm-runtime-local/blob/main/qwen3multimediaembeddings.ipynb) — Notebook for multimedia embeddings experiments.
-- [hfdownloader/](https://github.com/Dhanush-sai-reddy/llm-runtime-local/tree/main/hfdownloader) — Utilities for downloading models from Hugging Face.
+- [hfdownloader/](https://github.com/Dhanush-sai-reddy/llm-runtime-local/tree/main/hfdownloader) — Utilities for downloading models from Hugging Face with your hftoken
 - [milvusdb/](https://github.com/Dhanush-sai-reddy/llm-runtime-local/tree/main/milvusdb) — Example / helpers for Milvus vector DB integration.
-- [sql-and-rag/](https://github.com/Dhanush-sai-reddy/llm-runtime-local/tree/main/sql-and-rag) — SQL + RAG examples and helpers.
 - [vision rag/](https://github.com/Dhanush-sai-reddy/llm-runtime-local/tree/main/vision%20rag) — Image/vision RAG examples.
-- [docs&imagestovoiceast.py](https://github.com/Dhanush-sai-reddy/llm-runtime-local/blob/main/docs%26imagestovoiceast.py) -Image and document rag with voice output
+- [docs&imagestovoiceast.py](https://github.com/Dhanush-sai-reddy/llm-runtime-local/blob/main/docs%26imagestovoiceast.py) -Image and document rag with voice output and reranker model
+- [qwen3multimediaembeddings.ipynb](https://github.com/Dhanush-sai-reddy/llm-runtime-local/blob/main/qwen3multimediaembeddings.ipynb) — Notebook for multimedia embeddings (one embeddings for text,image,video unlike a different pipeline for all).
 
 
 > Note: The repository currently contains multiple example scripts. Read the top of each script to learn required dependencies and configurable options
->     its advisable for running scripts in colab 
-
-## Goals
-- Provide straightforward, local-first experiments combining open weights with RAG-style retrieval.
-- Offer examples across modalities: text, SQL, images, video, and audio.
-- Be a lightweight starting point to adapt local LLMs into applications without managed cloud services.
+> its advisable for running scripts in colab 
 
 ## Requirements
-- Python 3.9+ (recommend 3.10+)
+- Python 3.9+
 - Typical Python dependencies (install per-script or project requirements). Common packages used in this ecosystem:
   - torch
   - transformers
@@ -37,7 +32,7 @@ TL;DR
   - numpy, pandas, torchvision (for vision examples)
   - langchain
   - langraph
-- GPU recommended for larger models.
+- GPU recommended for larger models
 
 
 ## Quickstart (example workflow)
@@ -65,7 +60,6 @@ TL;DR
    - Check the top of the script for available flags (model path, index path, etc).
 
 Notes:
-- Each example script is designed to be modified — read the header comments for expected inputs and output behavior.
 - For Milvus usage, see the `milvusdb/` helper files and ensure the Milvus server is running before connecting.
 
 ## Examples of how scripts fit together
