@@ -1,0 +1,22 @@
+Patient Name: John Doe
+Date of Birth: 1980-05-15
+Date of Visit: 2023-10-27
+
+Subjective:
+Patient presents with a 3-day history of persistent headache and mild fever (100.4 F). He reports sensitivity to light and nausea. No history of migraines. He mentions he traveled to a rural area recently for a camping trip.
+
+Objective:
+BP 130/85, HR 88, RR 18.
+Head and Neck: Normocephalic, atraumatic. Neck supple, but slightly stiff.
+Lungs: Clear to auscultation bilaterally.
+Skin: No rashes noted.
+
+Assessment:
+1. Acute headache, suspect tension vs viral etiology.
+2. Rule out meningitis given neck stiffness and fever.
+
+Plan:
+1. Order CBC, CMP.
+2. Prescribe Ibuprofen 400mg every 6 hours for pain.
+3. Advise plenty of fluids and rest.
+4. Follow up in 24 hours if symptoms worsen.
