@@ -1,3 +1,1 @@
 langextract
-langchain
-langchain-ollama

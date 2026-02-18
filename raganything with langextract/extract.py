@@ -1,26 +1,60 @@
-import os
-from langextract import Extract
-from langchain_ollama import ChatOllama
-from pydantic import BaseModel, Field
-from typing import List, Optional
+import langextract as lx
 
-# Define the schema for extraction
-class MedicalAssessment(BaseModel):
-    condition: str = Field(description="The diagnosed or suspected condition.")
-    status: str = Field(description="Status of the condition (e.g., Acute, Chronic, Suspected).")
+# Define the prompt and extraction rules for medical records
+prompt = """Extract medical entities from clinical notes in order of appearance.
+Extract patient demographics, symptoms, vitals, assessments, and plan items.
+Use exact text for extractions. Do not paraphrase or overlap entities.
+Provide meaningful attributes for each entity to add context."""
 
-class MedicalPlan(BaseModel):
-    action: str = Field(description="The action to be taken (e.g., Order labs, Prescribe medication).")
-    details: Optional[str] = Field(description="Details of the action (e.g., dosage, specific labs).")
+# Provide a high-quality example to guide the model
+examples = [
+    lx.data.ExampleData(
+        text="Patient Name: Jane Smith\nDate of Birth: 1990-01-20\nDate of Visit: 2023-09-15\n\nSubjective:\nPatient complains of sore throat and dry cough for 2 days.\n\nObjective:\nBP 120/80, HR 72.\nThroat: Erythematous.\n\nAssessment:\n1. Acute pharyngitis.\n\nPlan:\n1. Prescribe Amoxicillin 500mg three times daily.",
+        extractions=[
+            lx.data.Extraction(
+                extraction_class="patient_info",
+                extraction_text="Jane Smith",
+                attributes={"field": "name"}
+            ),
+            lx.data.Extraction(
+                extraction_class="patient_info",
+                extraction_text="1990-01-20",
+                attributes={"field": "date_of_birth"}
+            ),
+            lx.data.Extraction(
+                extraction_class="patient_info",
+                extraction_text="2023-09-15",
+                attributes={"field": "visit_date"}
+            ),
+            lx.data.Extraction(
+                extraction_class="symptom",
+                extraction_text="sore throat",
+                attributes={"duration": "2 days"}
+            ),
+            lx.data.Extraction(
+                extraction_class="symptom",
+                extraction_text="dry cough",
+                attributes={"duration": "2 days"}
+            ),
+            lx.data.Extraction(
+                extraction_class="vitals",
+                extraction_text="BP 120/80, HR 72",
+                attributes={"summary": "normal range"}
+            ),
+            lx.data.Extraction(
+                extraction_class="assessment",
+                extraction_text="Acute pharyngitis",
+                attributes={"status": "acute"}
+            ),
+            lx.data.Extraction(
+                extraction_class="plan",
+                extraction_text="Prescribe Amoxicillin 500mg three times daily",
+                attributes={"action": "prescribe_medication", "details": "Amoxicillin 500mg TID"}
+            ),
+        ]
+    )
+]
 
-class MedicalRecord(BaseModel):
-    patient_name: str = Field(description="Name of the patient.")
-    dob: str = Field(description="Date of birth of the patient.")
-    visit_date: str = Field(description="Date of the visit.")
-    symptoms: List[str] = Field(description="List of symptoms reported by the patient.")
-    vitals: str = Field(description="Vital signs summary.")
-    assessments: List[MedicalAssessment] = Field(description="List of medical assessments.")
-    plan: List[MedicalPlan] = Field(description="List of plan items.")
 
 def main():
     # Load sample data
@@ -33,26 +67,43 @@ def main():
 
     print(f"Loaded medical record ({len(text_content)} chars)...")
 
-    # Initialize Local Gemma 3 Model via Ollama
-    print("Initializing Gemma 3 (1B)")
-    llm = ChatOllama(model="gemma3:1b", temperature=0)
+    # Run extraction using local Ollama model (Gemma 3 1B)
+    print("Extracting data using LangExtract + Ollama (gemma3:1b)...\n")
 
-    # Initialize LangExtract
-    extractor = Extract(llm=llm, schema=MedicalRecord)
-
-    # Run extraction
-    print("Extracting data using LangExtract")
-    
     try:
-        result = extractor.extract(text_content)
-        
+        result = lx.extract(
+            text_or_documents=text_content,
+            prompt_description=prompt,
+            examples=examples,
+            model_id="gemma3:1b",
+            model_url="http://localhost:11434",
+            fence_output=False,
+            use_schema_constraints=False,
+        )
+
         # Output results
-        print("\n--- Extracted Data (JSON Structure) ---\n")
-        print(result.json(indent=2))
+        print("\n--- Extracted Entities ---\n")
+        if result.extractions:
+            for ext in result.extractions:
+                print(f"  [{ext.extraction_class}] \"{ext.extraction_text}\"")
+                if ext.attributes:
+                    for k, v in ext.attributes.items():
+                        print(f"    {k}: {v}")
+                print()
+        else:
+            print("  No extractions found.")
+
+        # Save results to JSONL
+        lx.io.save_annotated_documents(
+            [result], output_name="extraction_results.jsonl", output_dir="."
+        )
+        print("Results saved to extraction_results.jsonl")
+
         print("\n--- Extraction Complete ---")
-        
+
     except Exception as e:
         print(f"An error occurred during extraction: {e}")
+
 
 if __name__ == "__main__":
     main()
