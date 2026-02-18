@@ -6,7 +6,6 @@ Extract patient demographics, symptoms, vitals, assessments, and plan items.
 Use exact text for extractions. Do not paraphrase or overlap entities.
 Provide meaningful attributes for each entity to add context."""
 
-# Provide a high-quality example to guide the model
 examples = [
     lx.data.ExampleData(
         text="Patient Name: Jane Smith\nDate of Birth: 1990-01-20\nDate of Visit: 2023-09-15\n\nSubjective:\nPatient complains of sore throat and dry cough for 2 days.\n\nObjective:\nBP 120/80, HR 72.\nThroat: Erythematous.\n\nAssessment:\n1. Acute pharyngitis.\n\nPlan:\n1. Prescribe Amoxicillin 500mg three times daily.",
@@ -68,7 +67,7 @@ def main():
     print(f"Loaded medical record ({len(text_content)} chars)...")
 
     # Run extraction using local Ollama model (Gemma 3 1B)
-    print("Extracting data using LangExtract + Ollama (gemma3:1b)...\n")
+    print("Extracting data using LangExtract  n  Ollama (gemma3:1b)...\n")
 
     try:
         result = lx.extract(

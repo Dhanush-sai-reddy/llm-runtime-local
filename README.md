@@ -17,6 +17,7 @@ TL;DR
 - [vision rag/](https://github.com/Dhanush-sai-reddy/llm-runtime-local/tree/main/vision%20rag) — Image/vision RAG examples.
 - [docs&imagestovoiceast.py](https://github.com/Dhanush-sai-reddy/llm-runtime-local/blob/main/docs%26imagestovoiceast.py) -Image and document rag with voice output and reranker model
 - [qwen3multimediaembeddings.ipynb](https://github.com/Dhanush-sai-reddy/llm-runtime-local/blob/main/qwen3multimediaembeddings.ipynb) — Notebook for multimedia embeddings (one embeddings for text,image,video unlike a different pipeline for all).
+- [Raganything with langextract/](https://github.com/Dhanush-sai-reddy/llm-runtime-local/tree/main/raganything%20with%20langextract) --An implementation of "Rag anything " with help of   langextract library
 
 
 > Note: The repository currently contains multiple example scripts. Read the top of each script to learn required dependencies and configurable options

@@ -1,1 +1,11 @@
-Saw John Doe today, DOB 5/15/80. He came in looking pretty rough, says he's had this pounding headache for about three days now and feels warm -- temp was 100.4 when we checked. Also complaining about lights bothering his eyes and feeling nauseous on and off. No migraine history per patient. He mentioned something about going camping out in the sticks last weekend. Vitals were a bit elevated, pressure 130 over 85, heart rate 88, breathing fine at 18. On exam his neck was a little stiff which concerned me, but head looked normal, no trauma. Lungs clear, skin looked fine, no rashes or anything unusual. I'm thinking this is probably a tension headache or maybe something viral but honestly with the stiff neck and the fever I want to make sure we're not missing meningitis. Going to get a CBC and CMP drawn. Told him to take ibuprofen 400 for the pain, every six hours or so. Needs to drink lots of water and take it easy. If he's not better in a day or things get worse he needs to come back right away. Visit date 10/27/23.
+Saw John Doe today, DOB 5/15/80. He came in looking pretty rough, says he's had 
+this pounding headache for about three days now and feels warm -- temp was 100.4 when we checked.
+Also complaining about lights bothering his eyes and feeling nauseous on and off. No migraine
+history per patient. He mentioned something about going camping out in the sticks last weekend. 
+Vitals were a bit elevated, pressure 130 over 85, heart rate 88, breathing fine at 18. On exam his
+neck was a little stiff which concerned me, but head looked normal, no trauma. Lungs clear, skin looked 
+fine, no rashes or anything unusual. I'm thinking this is probably a tension headache or maybe something 
+viral but honestly with the stiff neck and the fever I want to make sure we're not missing meningitis. 
+Going to get a CBC and CMP drawn. Told him to take ibuprofen 400 for the pain, every six hours or so. 
+Needs to drink lots of water and take it easy. If he's not better in a day or things get worse he needs
+to come back right away. Visit date 10/27/23.

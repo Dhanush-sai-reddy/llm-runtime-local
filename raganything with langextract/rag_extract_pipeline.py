@@ -15,6 +15,7 @@ import json
 import os
 import sys
 from pathlib import Path
+from types import SimpleNamespace
 
 import langextract as lx
 
@@ -155,7 +156,7 @@ async def describe_image_with_ollama(
         "stream": False,
     }
 
-    async with httpx.AsyncClient(timeout=120.0) as client:
+    async with httpx.AsyncClient(timeout=300.0) as client:
         response = await client.post(f"{base_url}/api/generate", json=payload)
         response.raise_for_status()
         result = response.json()
@@ -182,7 +183,7 @@ def step_langextract(text_content: str, model: str):
         )
     except Exception as e:
         print(f"Error in LangExtract: {e}")
-        return lx.data.ExtractResult(extractions=[])
+        return SimpleNamespace(extractions=[], document_id="unknown")
 
     return result
 
@@ -259,11 +260,15 @@ def print_extractions(result):
 
 
 def step_save_extractions(result, image_descriptions, output_path: str):
-    lx.io.save_annotated_documents(
-        [result],
-        output_name=os.path.basename(output_path),
-        output_dir=os.path.dirname(output_path) or ".",
-    )
+    try:
+        lx.io.save_annotated_documents(
+            [result],
+            output_name=os.path.basename(output_path),
+            output_dir=os.path.dirname(output_path) or ".",
+        )
+        print(f"Entities saved: {output_path}")
+    except Exception as e:
+        print(f"Warning: Could not save entities to file: {e}")
 
     if image_descriptions:
         img_output = output_path.replace(".jsonl", "_images.json")
@@ -336,7 +341,7 @@ async def run_pipeline(
     file_path: str,
     image_paths: list[str] | None = None,
     query: str | None = None,
-    text_model: str = "mistral",
+    text_model: str = "qwen3-vl:2b",
     vision_model: str = "qwen3-vl:2b",
     extract_only: bool = False,
     query_only: bool = False,
@@ -414,7 +419,7 @@ def main():
     parser.add_argument("file", help="Input text file")
     parser.add_argument("--images", "-i", nargs="+", help="Image files")
     parser.add_argument("--query", "-q", help="Query string")
-    parser.add_argument("--text-model", "-tm", default="mistral", help="Text LLM (default: mistral)")
+    parser.add_argument("--text-model", "-tm", default="qwen3-vl:2b", help="Text LLM (default: qwen3-vl:2b)")
     parser.add_argument("--vision-model", "-vm", default="qwen3-vl:2b", help="Vision LLM (default: qwen3-vl:2b)")
     parser.add_argument("--extract-only", action="store_true", help="Skip RAG indexing")
     parser.add_argument("--query-only", action="store_true", help="Skip extraction")

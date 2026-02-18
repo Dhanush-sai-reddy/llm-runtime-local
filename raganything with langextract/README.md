@@ -11,8 +11,7 @@ Flow:
 
 1. Python 3.10+
 2. Ollama running locally with:
-   - `mistral` (Text LLM)
-   - `qwen3-vl:2b` (Vision LLM)
+   - `qwen3-vl:2b` (Text & Vision LLM)
    - `qwen3-embedding` (Embeddings)
 
 ## Usage
