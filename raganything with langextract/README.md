@@ -1,41 +1,47 @@
-# LangExtract Standalone Demo
+# RAG-Anything + LangExtract Pipeline
 
-This project demonstrates how to use `LangExtract` to extract structured data from unstructured text using Google's Gemini models.
+A multimodal pipeline that combines LangExtract (structured entity extraction) with RAG-Anything (knowledge graph + retrieval), running locally via Ollama.
+
+Flow:
+1. Raw Text -> LangExtract -> Structured Entities
+2. Images -> Vision Model -> Text Descriptions
+3. Structured Data -> Knowledge Graph -> Query
 
 ## Prerequisites
 
-1.  **Python 3.10+**
-2.  A **Google Cloud API Key** (for Gemini).
+1. Python 3.10+
+2. Ollama running locally with:
+   - `mistral` (Text LLM)
+   - `qwen3-vl:2b` (Vision LLM)
+   - `qwen3-embedding` (Embeddings)
 
-## Setup
+## Usage
 
-1.  Create a virtual environment:
-    ```bash
-    python -m venv venv
-    .\venv\Scripts\activate
-    ```
+### Text Only
+```bash
+python rag_extract_pipeline.py sample_data.txt --query "What symptoms does the patient have?"
+```
 
-2.  Install dependencies:
-    ```bash
-    pip install -r requirements.txt
-    ```
+### Multimodal (Text + Images)
+```bash
+python rag_extract_pipeline.py sample_data.txt --images sample_vitals_chart.png sample_lab_results.png --query "What are the vitals trends?"
+```
 
-3.  Set up your environment variables:
-    - Create a `.env` file in this directory.
-    - Add your API key:
-      ```
-      GOOGLE_API_KEY=your_api_key_here
-      ```
+### Extract Only (Step 1)
+```bash
+python rag_extract_pipeline.py sample_data.txt --images *.png --extract-only
+```
 
-## Running the Demo
+### Custom Models
+```bash
+python rag_extract_pipeline.py report.txt \
+  --text-model llama3 \
+  --vision-model llava \
+  --query "Summarize findings"
+```
 
-1.  View the sample data:
-    - Open `sample_data.txt` to see the unstructured text.
+## Output
 
-2.  Run the extractor:
-    ```bash
-    python extract.py
-    ```
-
-3.  Check the output:
-    - The script will print the structured JSON extraction to the console.
+- `*_entities.jsonl`: Structured entities from text
+- `*_entities_images.json`: Image descriptions
+- `rag_storage_*/`: Knowledge graph storage
