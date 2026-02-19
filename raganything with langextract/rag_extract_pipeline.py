@@ -1,151 +1,133 @@
-"""
-RAG-Anything + LangExtract Pipeline (LangGraph orchestration)
-Nodes: extract_text -> analyze_images -> rag_index -> rag_query
-"""
-import asyncio, base64, json, os
+"""LangExtract + RAG-Anything pipeline via LangGraph — Gemini API (free tier)."""
+import asyncio, json, os, re, time, nest_asyncio
 from pathlib import Path
 from typing import TypedDict
-from types import SimpleNamespace
-import langextract as lx
-import httpx
+import google.generativeai as genai
 from langgraph.graph import StateGraph, END
 
-# --- Config ---
-TEXT_MODEL = "gemma3:1b"
-VISION_MODEL = "qwen3-vl:2b"
-OLLAMA = "http://localhost:11434"
+nest_asyncio.apply()
+
+GEMINI_MODEL = "gemini-2.0-flash"
 DATA_FILE = "sample_data.txt"
-IMAGES = ["sample_vitals_chart.png", "sample_lab_results.png"]
+IMAGES = ["sample_vitals_chart.png", "sample_lab_results.png", "sample_medication_timeline.png", "sample_pain_scores.png", "sample_spo2.png"]
 QUERY = "What symptoms does the patient have and what are the vitals?"
 
-EXAMPLE = lx.data.ExampleData(
-    text="Patient: Jane Smith\nDOB: 1990-01-20\nSore throat, dry cough 2 days.\nBP 120/80, HR 72.\nAssessment: Acute pharyngitis.\nPlan: Amoxicillin 500mg TID.",
-    extractions=[
-        lx.data.Extraction(extraction_class="patient_info", extraction_text="Jane Smith", attributes={"field": "name"}),
-        lx.data.Extraction(extraction_class="symptom", extraction_text="sore throat", attributes={"duration": "2 days"}),
-        lx.data.Extraction(extraction_class="vitals", extraction_text="BP 120/80, HR 72", attributes={"summary": "normal"}),
-        lx.data.Extraction(extraction_class="assessment", extraction_text="Acute pharyngitis", attributes={}),
-        lx.data.Extraction(extraction_class="plan", extraction_text="Amoxicillin 500mg TID", attributes={"action": "medication"}),
-    ],
-)
+try:
+    from dotenv import load_dotenv; load_dotenv(Path(__file__).parent.parent / ".env")
+except ImportError:
+    pass
 
-# --- State ---
-class PipelineState(TypedDict):
-    raw_text: str
-    extractions: list
-    image_descs: dict
-    combined_text: str
-    answer: str
+api_key = os.environ.get("GOOGLE_API_KEY") or os.environ.get("GEMINI_API_KEY") or input("Paste your Google API key: ").strip()
+genai.configure(api_key=api_key)
+model = genai.GenerativeModel(GEMINI_MODEL)
 
-# --- Nodes ---
-def extract_text(state: PipelineState) -> dict:
-    print(f"\n--- Extract ({TEXT_MODEL}) ---")
+# Rate-limited generate with auto-retry on 429
+def gen(*args, max_retries=5, **kwargs):
+    for attempt in range(max_retries):
+        try:
+            time.sleep(5)  # 5s gap = ~12 RPM, under 15 RPM free limit
+            return model.generate_content(*args, **kwargs)
+        except Exception as e:
+            if "429" in str(e) or "quota" in str(e).lower():
+                wait = 15 * (attempt + 1)
+                print(f"  [rate limited, waiting {wait}s...]", flush=True)
+                time.sleep(wait)
+            else:
+                raise
+    raise RuntimeError("Max retries exceeded")
+
+EXTRACT_PROMPT = """Extract medical entities from these clinical notes as a JSON array.
+Each entity: {"class": "patient_info|symptom|vitals|assessment|plan", "text": "exact text", "attributes": {}}
+Return ONLY the JSON array."""
+
+IMAGE_PROMPT = "Extract all data from this medical image as JSON. Include: image_type, patient, date, measurements/values with units, flags, trends. Return ONLY valid JSON."
+
+def parse_json(text):
+    cleaned = re.sub(r"^```\w*\n?|```$", "", text.strip(), flags=re.MULTILINE)
+    return json.loads(cleaned.strip())
+
+# Embed with retry
+def embed_with_retry(texts):
+    results = []
+    for t in texts:
+        for attempt in range(5):
+            try:
+                time.sleep(2)
+                results.append(genai.embed_content(model="models/text-embedding-004", content=t, task_type="retrieval_document")["embedding"])
+                break
+            except Exception as e:
+                if "429" in str(e) or "quota" in str(e).lower():
+                    time.sleep(15 * (attempt + 1))
+                else:
+                    raise
+    return results
+
+def get_rag():
+    from lightrag.utils import EmbeddingFunc
+    from raganything import RAGAnything, RAGAnythingConfig
+    async def llm(prompt, system_prompt=None, history_messages=[], **kw):
+        kw.pop("response_format", None)
+        full = (f"System: {system_prompt}\n\n" if system_prompt else "") + prompt
+        return gen(full).text
+    async def embed(texts):
+        return embed_with_retry(texts)
+    return RAGAnything(config=RAGAnythingConfig(working_dir="rag_storage_gemini"), llm_model_func=llm, vision_model_func=llm,
+        embedding_func=EmbeddingFunc(embedding_dim=768, max_token_size=8192, func=embed))
+
+class State(TypedDict):
+    raw_text: str; extractions: list; image_descs: dict; combined: str; answer: str
+
+def extract_text(s: State) -> dict:
+    print(f"\n--- Extract (Gemini) ---")
     try:
-        result = lx.extract(
-            text_or_documents=state["raw_text"],
-            prompt_description="Extract medical entities: demographics, symptoms, vitals, assessments, plans.",
-            examples=[EXAMPLE], model_id=TEXT_MODEL, model_url=OLLAMA,
-            fence_output=False, use_schema_constraints=False,
-        )
-        exts = result.extractions or []
+        exts = parse_json(gen(f"{EXTRACT_PROMPT}\n\n{s['raw_text']}").text)
     except Exception as e:
-        print(f"  Error: {e}")
-        exts = []
-    for e in exts:
-        print(f"  [{e.extraction_class}] {e.extraction_text}")
+        print(f"  Error: {e}"); exts = []
+    for e in exts: print(f"  [{e.get('class','')}] {e.get('text','')}")
     return {"extractions": exts}
 
-def analyze_images(state: PipelineState) -> dict:
-    print(f"\n--- Images ({VISION_MODEL}) ---")
+def analyze_images(s: State) -> dict:
+    print(f"\n--- Images (Gemini) ---")
     descs = {}
     for img in IMAGES:
-        if not Path(img).exists():
-            continue
-        print(f"  {img}...", end=" ")
+        if not Path(img).exists(): continue
+        print(f"  {img}...", end=" ", flush=True)
         try:
-            b64 = base64.b64encode(open(img, "rb").read()).decode()
-            r = httpx.post(f"{OLLAMA}/api/generate", json={
-                "model": VISION_MODEL, "prompt": f"Describe this medical image ({img}) in detail.",
-                "images": [b64], "stream": False
-            }, timeout=300)
-            descs[img] = r.json().get("response", "")
-            print(f"OK ({len(descs[img])} chars)")
+            img_data = {"mime_type": "image/png", "data": Path(img).read_bytes()}
+            resp = gen([IMAGE_PROMPT, img_data]).text
+            try: descs[img] = json.dumps(json.loads(resp), indent=2); print("OK (JSON)")
+            except: descs[img] = resp; print(f"OK ({len(resp)} chars)")
         except Exception as e:
-            descs[img] = f"[failed: {e}]"
-            print(f"Failed: {e}")
+            descs[img] = f'{{"error":"{e}"}}'; print(f"Failed: {e}")
     return {"image_descs": descs}
 
-def rag_index(state: PipelineState) -> dict:
-    print("\n--- RAG Index ---")
-    parts = [state["raw_text"], "\n# Extracted Entities"]
-    for e in state["extractions"]:
-        parts.append(f"- [{e.extraction_class}] {e.extraction_text}")
-    for name, desc in state["image_descs"].items():
-        parts.append(f"\n# Image: {name}\n{desc}")
+def rag_index(s: State) -> dict:
+    print("\n--- RAG Index (this may take a few mins on free tier) ---")
+    parts = [s["raw_text"], "\n# Entities"] + [f"- [{e.get('class','')}] {e.get('text','')}" for e in s["extractions"]]
+    parts += [f"\n# Image: {n}\n{d}" for n,d in s["image_descs"].items()]
     combined = "\n".join(parts)
-
-    from lightrag.llm.ollama import ollama_model_complete, ollama_embed
-    from lightrag.utils import EmbeddingFunc
-    from raganything import RAGAnything, RAGAnythingConfig
-
-    async def llm(prompt, system_prompt=None, history_messages=[], **kw):
-        kw.pop("response_format", None)
-        return await ollama_model_complete(prompt, system_prompt=system_prompt,
-            history_messages=history_messages, host=OLLAMA, model=TEXT_MODEL, **kw)
-
-    emb = EmbeddingFunc(embedding_dim=2048, max_token_size=8192,
-        func=lambda texts: ollama_embed(texts, embed_model="qwen3-embedding", host=OLLAMA))
-
-    rag = RAGAnything(config=RAGAnythingConfig(working_dir="rag_storage"),
-        llm_model_func=llm, vision_model_func=llm, embedding_func=emb)
-    asyncio.get_event_loop().run_until_complete(rag.lightrag.ainsert(combined))
+    asyncio.get_event_loop().run_until_complete(get_rag().lightrag.ainsert(combined))
     print("  Indexed.")
-    return {"combined_text": combined, "_rag": rag}
+    return {"combined": combined}
 
-def rag_query(state: PipelineState) -> dict:
+def rag_query(s: State) -> dict:
     print(f"\n--- Query: {QUERY} ---")
-    # Re-create RAG instance to query
-    from lightrag.llm.ollama import ollama_model_complete, ollama_embed
-    from lightrag.utils import EmbeddingFunc
-    from raganything import RAGAnything, RAGAnythingConfig
-
-    async def llm(prompt, system_prompt=None, history_messages=[], **kw):
-        kw.pop("response_format", None)
-        return await ollama_model_complete(prompt, system_prompt=system_prompt,
-            history_messages=history_messages, host=OLLAMA, model=TEXT_MODEL, **kw)
-
-    emb = EmbeddingFunc(embedding_dim=2048, max_token_size=8192,
-        func=lambda texts: ollama_embed(texts, embed_model="qwen3-embedding", host=OLLAMA))
-
-    rag = RAGAnything(config=RAGAnythingConfig(working_dir="rag_storage"),
-        llm_model_func=llm, vision_model_func=llm, embedding_func=emb)
-    answer = asyncio.get_event_loop().run_until_complete(rag.aquery(QUERY, mode="hybrid"))
+    answer = asyncio.get_event_loop().run_until_complete(get_rag().aquery(QUERY, mode="hybrid"))
     print(f"\n  Answer:\n{answer}")
     return {"answer": str(answer)}
 
-# --- Graph ---
-graph = StateGraph(PipelineState)
-graph.add_node("extract_text", extract_text)
-graph.add_node("analyze_images", analyze_images)
-graph.add_node("rag_index", rag_index)
-graph.add_node("rag_query", rag_query)
-graph.set_entry_point("extract_text")
-graph.add_edge("extract_text", "analyze_images")
-graph.add_edge("analyze_images", "rag_index")
-graph.add_edge("rag_index", "rag_query")
-graph.add_edge("rag_query", END)
-pipeline = graph.compile()
+g = StateGraph(State)
+for name, fn in [("extract", extract_text), ("images", analyze_images), ("index", rag_index), ("query", rag_query)]:
+    g.add_node(name, fn)
+g.set_entry_point("extract")
+g.add_edge("extract", "images"); g.add_edge("images", "index"); g.add_edge("index", "query"); g.add_edge("query", END)
+pipeline = g.compile()
 
 if __name__ == "__main__":
     os.chdir(Path(__file__).parent)
     raw = Path(DATA_FILE).read_text(encoding="utf-8")
     print(f"Loaded {DATA_FILE} ({len(raw)} chars)")
-
-    result = pipeline.invoke({"raw_text": raw, "extractions": [], "image_descs": {}, "combined_text": "", "answer": ""})
-
-    with open("output.json", "w") as f:
-        json.dump({"extractions": [{"class": e.extraction_class, "text": e.extraction_text,
-            "attrs": e.attributes} for e in result.get("extractions", [])],
-            "image_descriptions": result.get("image_descs", {}),
-            "query": QUERY, "answer": result.get("answer", "")}, f, indent=2)
+    print("Using Gemini free tier — pipeline will be slow due to rate limits (~2-5 min total)")
+    result = pipeline.invoke({"raw_text": raw, "extractions": [], "image_descs": {}, "combined": "", "answer": ""})
+    json.dump({"extractions": result.get("extractions",[]), "images": result.get("image_descs",{}), "query": QUERY, "answer": result.get("answer","")}, open("output.json","w"), indent=2)
     print("\nDone. Results in output.json")

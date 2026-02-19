@@ -21,6 +21,9 @@ wheels/
 *.egg
 MANIFEST
 
+# Secrets
+.env
+
 # Virtual Environments
 venv/
 .venv/
