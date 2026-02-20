@@ -153,6 +153,11 @@ def extract_from_file(filepath: str = INPUT_FILE) -> lx.data.AnnotatedDocument |
         print(f"Error: {filepath} not found.")
         return None
 
+    # Split the long text and process only the first patient record to avoid context limit OOM
+    parts = text_content.split("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+    if len(parts) > 1:
+        text_content = parts[1] # the first patient record
+
     print(f"Loaded text ({len(text_content)} chars) from {filepath}")
     print(f"Extracting entities using LangExtract + Ollama ({OLLAMA_MODEL})...\n")
 
