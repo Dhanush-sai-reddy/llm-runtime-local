@@ -1,11 +1,351 @@
-Saw John Doe today, DOB 5/15/80. He came in looking pretty rough, says he's had 
-this pounding headache for about three days now and feels warm -- temp was 100.4 when we checked.
-Also complaining about lights bothering his eyes and feeling nauseous on and off. No migraine
-history per patient. He mentioned something about going camping out in the sticks last weekend. 
-Vitals were a bit elevated, pressure 130 over 85, heart rate 88, breathing fine at 18. On exam his
-neck was a little stiff which concerned me, but head looked normal, no trauma. Lungs clear, skin looked 
-fine, no rashes or anything unusual. I'm thinking this is probably a tension headache or maybe something 
-viral but honestly with the stiff neck and the fever I want to make sure we're not missing meningitis. 
-Going to get a CBC and CMP drawn. Told him to take ibuprofen 400 for the pain, every six hours or so. 
-Needs to drink lots of water and take it easy. If he's not better in a day or things get worse he needs
-to come back right away. Visit date 10/27/23.
+MERCY GENERAL HOSPITAL — INTEGRATED CLINICAL DATA REPOSITORY
+=============================================================
+Report Period: January 2024 – June 2024
+Generated: 2024-07-01 | System: MercyEHR v4.2
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+PATIENT RECORD: MRN-20240115-0847
+──────────────────────────────────
+Patient Name: Rajesh Venkataraman
+Date of Birth: 1968-03-12
+Gender: Male
+Blood Type: B+
+Primary Insurance: BlueCross Platinum PPO
+Emergency Contact: Priya Venkataraman (spouse) — 555-0192
+
+Referring Physician: Dr. Amanda Chen, MD (Internal Medicine, Mercy Clinic – Downtown)
+Primary Care Provider: Dr. Samuel Okafor, MD, FACP (Mercy Primary Care Associates)
+
+Admission Date: 2024-01-15
+Admission Type: Emergency
+Admitting Diagnosis: Acute ST-elevation myocardial infarction (STEMI), anterior wall
+
+PRESENTING COMPLAINT:
+Patient presented to ED via ambulance at 0347 hours with crushing substernal chest pain radiating to left arm and jaw, onset 90 minutes prior. Associated symptoms: diaphoresis, nausea, dyspnea. Pain rated 9/10 on NRS. Patient reports history of untreated hypertension and hyperlipidemia. Former smoker (30 pack-years, quit 2019).
+
+EMERGENCY DEPARTMENT COURSE:
+ED Attending: Dr. Lisa Moreau, MD (Emergency Medicine)
+Triage Nurse: RN Patricia Duong
+- Initial ECG: ST elevation V1-V4, reciprocal changes in II, III, aVF
+- Troponin I (initial): 2.8 ng/mL (ref: <0.04)
+- Troponin I (3hr): 18.6 ng/mL
+- BNP: 890 pg/mL (ref: <100)
+- CBC: WBC 12.4, Hgb 14.2, Plt 245
+- BMP: Na 138, K 4.1, Cr 1.1, Glucose 186
+- Lipid Panel: Total Cholesterol 268, LDL 182, HDL 34, Triglycerides 260
+- Chest X-ray: Mild pulmonary congestion bilateral
+- Aspirin 325mg PO, Clopidogrel 600mg loading dose, Heparin 5000U IV bolus
+- Door-to-balloon time target: <90 minutes
+
+CARDIAC CATHETERIZATION LAB:
+Interventional Cardiologist: Dr. Michael Reeves, MD, FSCAI
+Cath Lab Nurse: RN James Okoro
+Procedure: Emergency percutaneous coronary intervention (PCI)
+- Access: Right radial artery
+- Findings: 95% occlusion of proximal LAD (culprit lesion), 70% stenosis of mid-RCA, 40% stenosis of LCx
+- Intervention: Drug-eluting stent (Xience Sierra 3.5mm x 28mm) deployed to proximal LAD
+- Post-PCI TIMI flow: Grade 3 (complete reperfusion)
+- Door-to-balloon time: 62 minutes
+- Complications: None
+
+ICU COURSE (5 days):
+Attending: Dr. Sarah Krishnamurthy, MD (Cardiology/Critical Care)
+ICU Nurse (Day): RN Maria Santos
+ICU Nurse (Night): RN Thomas Blackwell
+- Continuous telemetry monitoring
+- Peak troponin: 42.3 ng/mL at 12 hours
+- Echocardiogram (Day 2): LVEF 35%, anterior wall hypokinesis, mild mitral regurgitation
+- Initiated: Metoprolol 25mg BID, Lisinopril 5mg daily, Atorvastatin 80mg daily
+- Insulin drip for hyperglycemia (transitioned to Metformin 500mg BID on Day 3)
+- HbA1c: 7.8% — new diagnosis Type 2 Diabetes Mellitus
+- Cardiac Rehabilitation referral placed
+
+STEP-DOWN UNIT (3 days):
+- Ambulation program initiated, tolerated 200m hallway walks
+- Dietary consult: Dr. Rachel Fernandez, RD — prescribed Mediterranean-DASH diet
+- Smoking cessation counseling: Social Worker Linda Park, MSW
+- Repeat echo (Day 7): LVEF improved to 40%
+- Diabetes education: CDE Nurse Karen Wu, RN, CDCES
+
+DISCHARGE SUMMARY:
+Discharge Date: 2024-01-23
+Discharge Diagnoses:
+1. Acute STEMI, anterior wall — status post PCI with DES to LAD
+2. Three-vessel coronary artery disease (LAD stented, RCA 70%, LCx 40%)
+3. Heart failure with reduced ejection fraction (HFrEF), LVEF 40%
+4. Type 2 Diabetes Mellitus (newly diagnosed, HbA1c 7.8%)
+5. Hypertension, uncontrolled
+6. Hyperlipidemia, severe
+7. Former tobacco use disorder
+
+Discharge Medications:
+- Aspirin 81mg daily (indefinite)
+- Clopidogrel (Plavix) 75mg daily (minimum 12 months post-stent)
+- Metoprolol succinate 50mg daily
+- Lisinopril 10mg daily
+- Atorvastatin 80mg daily
+- Metformin 500mg BID
+- Nitroglycerin 0.4mg SL PRN chest pain
+- Pantoprazole 40mg daily (GI prophylaxis)
+
+Follow-up Appointments:
+- Dr. Reeves (Interventional Cardiology): 2 weeks
+- Dr. Krishnamurthy (Heart Failure Clinic): 4 weeks
+- Dr. Okafor (Primary Care): 1 week
+- Cardiac Rehabilitation Program: begins 2024-02-05
+- Diabetes Management Clinic: 2024-02-12
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+PATIENT RECORD: MRN-20240203-1234
+──────────────────────────────────
+Patient Name: Eleanor Whitfield
+Date of Birth: 1945-11-08
+Gender: Female
+Blood Type: A-
+Primary Insurance: Medicare Part A & B + AARP Supplement
+Emergency Contact: David Whitfield (son) — 555-0384
+
+Referring Physician: Dr. Samuel Okafor, MD, FACP
+Primary Care Provider: Dr. Samuel Okafor, MD, FACP
+
+Admission Date: 2024-02-03
+Admission Type: Scheduled (transferred from Mercy Skilled Nursing Facility)
+Admitting Diagnosis: Acute on chronic kidney disease, stage 4 → stage 5 progression
+
+HISTORY OF PRESENT ILLNESS:
+78-year-old female with extensive medical history including CKD stage 4, Type 2 Diabetes (on insulin since 2018), CHF with preserved EF (HFpEF, LVEF 55%), atrial fibrillation on Eliquis, COPD (Gold Stage II), and osteoarthritis requiring bilateral knee replacements (2020, 2021). Referred by Dr. Okafor after routine labs showed rapid GFR decline from 22 → 14 mL/min over 8 weeks. Patient reports increasing fatigue, nausea, peripheral edema, and decreased urine output over past 3 weeks. Currently residing at Mercy Skilled Nursing Facility following a fall with hip fracture repair (Dr. Kevin Chang, Orthopedics) in November 2023.
+
+NEPHROLOGY CONSULTATION:
+Consulting Nephrologist: Dr. Yuki Tanaka, MD, FASN
+- GFR: 12 mL/min/1.73m²
+- BUN: 78, Creatinine: 4.8
+- Potassium: 5.9 (critical high)
+- Phosphorus: 6.2, Calcium: 7.8 (corrected: 8.4)
+- Albumin: 2.9 (low)
+- Hemoglobin: 8.6 (anemia of CKD)
+- Urinalysis: Proteinuria 3+, granular casts
+- Renal ultrasound: Bilateral small kidneys (8.5cm R, 8.2cm L), increased echogenicity, no hydronephrosis
+- Assessment: ESRD requiring renal replacement therapy
+- Discussed dialysis options with patient and family: hemodialysis vs peritoneal dialysis
+- Patient elected hemodialysis via AV fistula
+
+VASCULAR SURGERY CONSULTATION:
+Consulting Surgeon: Dr. Roberto Garza, MD, FACS (Vascular Surgery)
+Procedure: Left brachiocephalic AV fistula creation
+- Date: 2024-02-06
+- Anesthesia: Regional (brachial plexus block by Dr. Anjali Mehta, Anesthesiology)
+- Outcome: Successful, good thrill and bruit post-op
+- Fistula maturation expected: 6-8 weeks
+- Temporary dialysis via right internal jugular tunneled catheter (PermCath) placed by Dr. Garza on 2024-02-04
+
+INPATIENT DIALYSIS:
+Dialysis commenced 2024-02-05 via PermCath
+Nephrologist: Dr. Tanaka
+Dialysis Nurse: RN Charles Okonkwo, CNN
+- Schedule: MWF, 3.5 hours per session
+- Dialyzer: Fresenius FX80
+- Blood flow rate: 300 mL/min, Dialysate flow: 500 mL/min
+- Potassium normalized to 4.4 after first session
+- Dry weight target: 62 kg (admission weight: 68 kg)
+- Epoetin alfa 4000 units IV with each dialysis session (anemia management)
+- Sevelamer 800mg TID with meals (phosphate binder)
+- Calcitriol 0.25mcg daily
+
+ADDITIONAL CONSULTATIONS:
+1. Endocrinology — Dr. Patricia Huang, MD:
+   - Insulin adjusted: Lantus 18 units bedtime (reduced from 24 units due to renal clearance changes)
+   - Humalog sliding scale with meals
+   - HbA1c: 8.2%
+   - Recommended CGM (Dexcom G7) for SNF monitoring
+
+2. Pulmonology — Dr. William Strauss, MD:
+   - COPD maintenance: Spiriva HandiHaler 18mcg daily + Symbicort 160/4.5 BID
+   - PFTs: FEV1 58% predicted, FEV1/FVC 0.62
+   - Sleep study ordered (suspected OSA given neck circumference and Epworth score 14)
+
+3. Cardiology — Dr. Krishnamurthy, MD:
+   - Echo: LVEF 55%, Grade II diastolic dysfunction, moderate tricuspid regurgitation
+   - A-fib rate controlled (HR 68-82)
+   - Eliquis dose adjusted to 2.5mg BID (renal dosing)
+   - BNP: 1240 pg/mL — volume overload contributing
+   - Aggressive diuresis with Bumetanide 2mg IV BID
+
+4. Geriatrics — Dr. Miriam Goldstein, MD:
+   - Comprehensive geriatric assessment
+   - Mini-Cog score: 3/5 (borderline cognitive impairment)
+   - PHQ-9 score: 12 (moderate depression)
+   - Started Sertraline 25mg daily
+   - Fall risk assessment: HIGH — continued physical therapy
+   - Goals of care discussion: Patient desires full treatment but has completed POLST (no CPR/intubation)
+
+PHYSICAL THERAPY:
+PT: Jessica Morales, DPT
+- Hip fracture rehab ongoing — gait training with rolling walker
+- Balance score (Berg): 32/56 (moderate fall risk)
+- Grip strength: 14 kg R, 16 kg L (below norms)
+- Goal: Independent ambulation 150 feet with walker by discharge
+
+DISCHARGE SUMMARY:
+Discharge Date: 2024-02-18
+Discharge Destination: Mercy Skilled Nursing Facility
+Discharge Diagnoses:
+1. End-stage renal disease, initiated hemodialysis
+2. AV fistula created (maturing), PermCath in situ for dialysis access
+3. Type 2 Diabetes Mellitus, insulin-dependent (adjusted for ESRD)
+4. Heart failure with preserved ejection fraction
+5. Atrial fibrillation, rate-controlled
+6. COPD Gold Stage II
+7. Status post right hip fracture ORIF (Nov 2023)
+8. Major depressive disorder, newly diagnosed
+9. Mild cognitive impairment
+10. Malnutrition, moderate (albumin 2.9)
+
+Active Medications at Discharge (18 medications):
+- Aspirin 81mg daily
+- Eliquis 2.5mg BID
+- Metoprolol tartrate 25mg BID
+- Bumetanide 1mg PO daily
+- Lantus 18 units SQ at bedtime
+- Humalog sliding scale AC
+- Sevelamer 800mg TID with meals
+- Calcitriol 0.25mcg daily
+- Sertraline 25mg daily
+- Spiriva 18mcg inhaled daily
+- Symbicort 160/4.5 BID
+- Pantoprazole 20mg daily
+- Acetaminophen 650mg TID PRN pain
+- Docusate 100mg BID
+- Epoetin alfa 4000 units IV with dialysis (MWF)
+- Calcium carbonate 500mg BID between meals
+- Vitamin D3 2000 IU daily
+- Melatonin 3mg at bedtime
+
+Outpatient Dialysis: Mercy Dialysis Center — South, MWF 0600
+- Nephrologist: Dr. Tanaka
+- Fistula check: Dr. Garza in 6 weeks (2024-03-18)
+Follow-up: Dr. Okafor (2 weeks), Dr. Huang (4 weeks), Dr. Strauss (3 weeks), Dr. Goldstein (6 weeks)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+PATIENT RECORD: MRN-20240310-0561
+──────────────────────────────────
+Patient Name: Marcus Delgado-Rivera
+Date of Birth: 1992-07-25
+Gender: Male
+Blood Type: O+
+Primary Insurance: Employer (TechCorp Inc. — Aetna Select)
+Emergency Contact: Sofia Delgado (mother) — 555-0741
+
+Primary Care Provider: Dr. Helen Brooks, DO (Mercy Family Medicine – East)
+
+Admission Date: 2024-03-10
+Admission Type: Emergency (psychiatric hold, 5150)
+Admitting Diagnosis: Acute psychotic episode, substance-induced vs primary psychotic disorder
+
+PRESENTING COMPLAINT (per EMS and family):
+31-year-old male brought to ED by paramedics after family called 911 for bizarre behavior: patient barricaded himself in home office, claimed "the algorithms are rewriting my neural pathways," had not slept for 5 days, was found to have consumed significant amounts of unprescribed Adderall (obtained from coworker) along with heavy caffeine use (estimated 1200mg/day). Mother reports patient has been under extreme work stress (software engineer, 80+ hour weeks for 3 months). No prior psychiatric history. No known family psychiatric history except maternal uncle with bipolar disorder.
+
+EMERGENCY DEPARTMENT:
+ED Attending: Dr. Lisa Moreau, MD
+Psychiatry Consult: Dr. Natasha Volkov, MD (Psychiatry)
+- Vital Signs: BP 168/98, HR 112, RR 22, Temp 37.8°C, SpO2 98%
+- Urine Drug Screen: Positive for amphetamines, negative for all others
+- Blood Alcohol: 0.00
+- TSH: 1.2 (normal), B12: 680 (normal)
+- CT Head: No acute intracranial pathology
+- Mental Status Exam: Agitated, tangential speech, paranoid delusions (believes employer implanted tracking devices), auditory hallucinations (voices giving "coded instructions"), no suicidal/homicidal ideation, oriented x1 (person only), poor insight and judgment
+- Assessment: Acute psychotic episode, likely substance-induced (amphetamine) with possible underlying vulnerability
+-  5150 hold initiated, transferred to Mercy Behavioral Health Unit
+
+INPATIENT PSYCHIATRIC COURSE (14 days):
+Attending Psychiatrist: Dr. Volkov
+Unit: Mercy Behavioral Health — Acute Stabilization (12-bed locked unit)
+Assigned Nurse: RN Derek Chang, PMH-BC
+Social Worker: Maria Castellanos, LCSW
+
+Days 1-3 (Acute Stabilization):
+- Olanzapine 10mg IM x2 for acute agitation
+- Lorazepam 2mg IM PRN (given x3 in first 48 hours)
+- Haloperidol 5mg IM x1 (for breakthrough psychosis)
+- Sleep protocol: Trazodone 100mg, sleep normalized by Day 3
+- Vital signs normalizing: BP 132/84, HR 78 by Day 3
+- Paranoid delusions persisting but less intense
+
+Days 4-7 (Diagnostic Clarification):
+- Amphetamines cleared from system (confirmed by repeat UDS Day 5)
+- Despite clearance, psychotic symptoms persisting — reclassified as Brief Psychotic Disorder vs Schizophreniform Disorder
+- Neuropsychological testing ordered: Dr. Alan Foster, PhD (Clinical Neuropsychology)
+  - WAIS-IV: FSIQ 128 (Superior range)
+  - MMPI-3: Elevated scales on RC6 (Ideas of Persecution), RC8 (Aberrant Experiences)
+  - Trail Making B: Within normal limits
+  - Wisconsin Card Sorting: Mildly impaired perseverative errors
+  - Assessment: Psychotic features likely reflect primary psychiatric illness rather than pure substance effect given persistence and neuropsych profile
+- Started Risperidone 2mg BID (transitioned from PRN antipsychotics)
+- Psychotherapy initiated: CBT for psychosis (CBTp) — Dr. Foster
+
+Days 8-14 (Recovery & Discharge Planning):
+- Delusions resolving — patient able to reality-test with prompting
+- Auditory hallucinations reduced to occasional "whispers" — non-commanding
+- Insight improving: Patient acknowledges symptoms were "not real" but reports lingering unease
+- Family therapy session with mother (Sofia) — facilitated by Maria Castellanos, LCSW
+- Occupational Therapy assessment: Angela Torres, OTR/L
+  - Cognitive functional assessment: Independent in all ADLs/IADLs
+  - Recommended: Graduated return to work, stress management techniques
+- HR department at TechCorp contacted (with patient consent) — 8-week medical leave approved
+- Risperidone well-tolerated, no EPS noted, prolactin level 38 ng/mL (mildly elevated, monitoring)
+
+DISCHARGE SUMMARY:
+Discharge Date: 2024-03-24
+Discharge Diagnoses:
+1. Schizophreniform Disorder (provisional — reassess at 6 months)
+2. Amphetamine Use Disorder, moderate
+3. Insomnia disorder
+4. Occupational burnout syndrome
+
+Discharge Medications:
+- Risperidone 2mg BID
+- Trazodone 50mg at bedtime
+- Hydroxyzine 25mg PRN anxiety
+
+Outpatient Plan:
+- Dr. Volkov (Psychiatry): Weekly x4, then biweekly
+- Dr. Foster (Neuropsychology): CBTp weekly sessions
+- Substance Abuse Counseling: Mercy Outpatient Addiction Services — Counselor Ray Martinez, CADC
+- Support Group: NAMI Connection Recovery Group (Thursdays, 6pm)
+- Medical leave from TechCorp: 8 weeks, gradual return-to-work plan
+- Safety Plan documented — crisis hotline, mother as primary support
+
+Follow-up: Dr. Brooks (PCP, 1 week), Dr. Volkov (3 days post-discharge), 6-month reassessment for diagnostic clarification
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+INTER-DEPARTMENTAL NOTES & CROSS-REFERENCES
+──────────────────────────────────────────────
+
+NOTE 1 — Shared Provider Alert (Dr. Okafor):
+Dr. Okafor serves as PCP for both Rajesh Venkataraman (MRN-0847) and Eleanor Whitfield (MRN-1234). Care coordination meeting held 2024-02-20 with cardiology (Dr. Krishnamurthy) re: both patients — optimizing shared heart failure protocols. Dr. Krishnamurthy consulted on both cases for cardiac management.
+
+NOTE 2 — Pharmacy Cross-Reference:
+Mercy Pharmacy flagged potential interaction for Eleanor Whitfield: Eliquis + NSAID risk. Confirmed with Dr. Tanaka that patient is on acetaminophen only (no NSAIDs due to CKD). Rajesh Venkataraman's dual antiplatelet therapy (Aspirin + Plavix) also flagged — confirmed appropriate post-PCI per Dr. Reeves.
+
+NOTE 3 — Social Work Coordination:
+Linda Park (Social Worker for Venkataraman cardiac rehab) and Maria Castellanos (Social Worker for Delgado-Rivera psychiatric care) co-facilitated a departmental seminar on "Stress, Cardiovascular Risk, and Mental Health" on 2024-04-15, referencing anonymized data from both cases.
+
+NOTE 4 — Quality Metrics:
+- Venkataraman STEMI: Door-to-balloon 62 minutes (benchmark: <90) — EXCEEDS TARGET
+- Whitfield Dialysis Initiation: Catheter to first HD session: 1 day — MEETS TARGET
+- Delgado-Rivera Psych Hold: Length of stay 14 days — within expected range for schizophreniform
+
+NOTE 5 — Overlapping Medication Classes:
+Three-patient medication analysis reveals shared medication patterns:
+- Pantoprazole: Venkataraman (40mg) and Whitfield (20mg) — GI prophylaxis in polypharmacy patients
+- Metoprolol: Venkataraman (succinate 50mg) and Whitfield (tartrate 25mg BID) — different formulations per indication
+- Aspirin 81mg: Both Venkataraman and Whitfield
+
+NOTE 6 — Research Registry:
+Dr. Tanaka enrolled Eleanor Whitfield in the MERCY-CKD-2024 multicenter trial studying novel phosphate binder efficacy. Dr. Reeves is co-PI on the STENT-OPTIMAL registry tracking DES outcomes — Rajesh Venkataraman enrolled. Both studies approved by Mercy IRB (Chair: Dr. Evelyn Rothschild, MD, PhD).
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+END OF INTEGRATED CLINICAL DATA REPOSITORY REPORT

@@ -1,6 +1,9 @@
-google-generativeai
-python-dotenv
-raganything
-lightrag-hku
+langextract
+networkx
+numpy
 langgraph
-nest-asyncio
+xgboost
+magic-pdf[full]
+ollama
+sentence-transformers
+pyvis
