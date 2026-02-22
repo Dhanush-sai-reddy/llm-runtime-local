@@ -1,0 +1,12 @@
+PATIENT RECORD: MRN-555-1234
+Patient Name: Jane Doe
+Date of Birth: 1980-08-20
+
+Admission Date: 2024-10-15
+Admitting Diagnosis: Community-acquired pneumonia
+
+Medications:
+- Amoxicillin 500mg TID
+- Albuterol inhaler 2 puffs PRN
+
+Follow-up: Dr. Smith in 1 week.
