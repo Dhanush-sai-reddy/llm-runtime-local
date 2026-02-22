@@ -83,3 +83,13 @@ Desktop.ini
 *.fdb_latexmk
 
 # *.pdf
+
+# Specific GraphRAG and LangExtract processing data
+ms_graphrag/output/
+ms_graphrag/cache/
+ms_graphrag/lancedb/
+*.jsonl
+*.parquet
+entities.json
+langchain_kg.json
+knowledge_graph.json
