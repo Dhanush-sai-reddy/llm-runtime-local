@@ -1,20 +1,30 @@
-encoding_model: cl100k_base
-skip_workflows: []
-llm:
-  api_key: ${OPEN_ROUTER_KEY}
-  type: openai_chat
+# --- Provider Selection ---
+# Set 'provider' to either 'openrouter' or 'ollama'
+provider: ollama
+
+# --- OpenRouter Config ---
+openrouter:
   model: "google/gemini-2.5-flash"
   api_base: "https://openrouter.ai/api/v1"
-  concurrent_requests: 4
+  # API key loaded from ../.env (OPEN_ROUTER_KEY)
+
+# --- Ollama Config (local failsafe) ---
+ollama:
+  model: "gemma3:1b"
+  api_base: "http://localhost:11434/v1"
+
+# --- Common Settings ---
+encoding_model: cl100k_base
+skip_workflows: []
+concurrent_requests: 4
 
 embeddings:
   llm:
     api_key: "non-empty-key"
     type: openai_embedding
-    model: "BAAI/bge-small-en-v1.5" # Optional, only if you also have embedding endpoints on vLLM/Ollama
+    model: "BAAI/bge-small-en-v1.5"
     api_base: "http://localhost:8000/v1"
 
-# We customize the path to where our custom script generated the files.
 input:
   file_type: text
   base_dir: "input"

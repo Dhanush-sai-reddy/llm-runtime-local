@@ -106,3 +106,8 @@ graphrag-langextract-vllm/lancedb/
 # pathwaycom
 # pathwaycom/pathway - cloned external repo (don't push this)
 pathwaycom/pathway/
+# GraphRAG debug files
+source*.txt
+output.log
+example_data.txt
+test_api.py
