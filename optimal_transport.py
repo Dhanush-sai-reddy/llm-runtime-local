@@ -12,7 +12,6 @@ def compute_cost_matrix(x, y):
 def sinkhorn_knopp(a, b, C, epsilon=1e-2, num_iters=100):
     """
     Solves the entropically regularized optimal transport problem using the Sinkhorn-Knopp algorithm.
-    This runs very fast on GPU/TPU thanks to JAX.
     
     Args:
         a: Source distribution (shape: [n])

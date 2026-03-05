@@ -2,7 +2,6 @@
 ### For a full list of available settings, see https://microsoft.github.io/graphrag/config/yaml/
 
 ### LLM settings ###
-## There are a number of settings to tune the threading and token limits for LLM calls - check the docs.
 
 completion_models:
   default_completion_model:
@@ -10,7 +9,7 @@ completion_models:
     model: gemma3:1b
     api_base: http://localhost:11434/v1
     auth_method: api_key # or azure_managed_identity
-    api_key: ${GRAPHRAG_API_KEY} # set this in the generated .env file, or remove if managed identity
+    api_key: ${GRAPHRAG_API_KEY} # set this in the generated .env file ...possibly to ollama or other providers
     retry:
       type: exponential_backoff
 
@@ -34,10 +33,6 @@ chunking:
   size: 1200
   overlap: 100
   encoding_model: o200k_base
-
-### Storage settings ###
-## If blob storage is specified in the following four sections,
-## connection_string and container_name must be provided
 
 input_storage:
   type: file # [file, blob, cosmosdb]

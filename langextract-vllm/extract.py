@@ -3,7 +3,13 @@ import json
 import langextract as lx
 import yaml
 from pathlib import Path
+from dotenv import load_dotenv
 
+env_path = Path(__file__).parent.parent / ".env"
+load_dotenv(env_path)
+
+if "OPEN_ROUTER_KEY" in os.environ:
+    os.environ["OPENAI_API_KEY"] = os.environ["OPEN_ROUTER_KEY"]
 # --- CONFIGURATION (Load from YAML) ---
 with open("settings.yaml", "r") as f:
     config = yaml.safe_load(f)

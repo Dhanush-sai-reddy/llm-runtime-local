@@ -1,4 +1,4 @@
 input_directory: ./
 output_file: extraction_results.json
-vllm_model: google/gemma-3-1b-it
-vllm_url: http://localhost:8000/v1
+vllm_model: google/gemini-2.5-flash
+vllm_url: https://openrouter.ai/api/v1

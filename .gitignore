@@ -102,3 +102,7 @@ graphrag-langextract-vllm/prompts/
 graphrag-langextract-vllm/output/
 graphrag-langextract-vllm/cache/
 graphrag-langextract-vllm/lancedb/
+
+# pathwaycom
+# pathwaycom/pathway - cloned external repo (don't push this)
+pathwaycom/pathway/
